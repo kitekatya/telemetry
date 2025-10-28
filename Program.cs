@@ -5,11 +5,6 @@ using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorPages();
-
-var app = builder.Build();
-
 builder.Logging.AddOpenTelemetry(options =>
 {
     options
@@ -28,6 +23,11 @@ builder.Services.AddOpenTelemetry()
         .AddAspNetCoreInstrumentation()
         .AddConsoleExporter());
 
+// Add services to the container.
+builder.Services.AddRazorPages();
+
+var app = builder.Build();
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
